@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="控壓有一套">
+<meta name="description" content="高血壓衛教手機版：得舒飲食、運動與體重管理、戒菸限酒、居家照護與自我測驗">
+<title>控壓有一套 · 高血壓衛教</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<style>
+:root{
+  --primary:#0f766e;
+  --primary-dark:#115e59;
+  --primary-light:#ccfbf1;
+  --accent:#f97316;
+  --danger:#dc2626;
+  --bg:#f1f5f9;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --line:#e2e8f0;
+  --radius:18px;
+  --shadow:0 1px 2px rgba(15,23,42,.04),0 8px 24px -12px rgba(15,23,42,.18);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+  background:var(--bg);color:var(--text);
+  padding-bottom:calc(72px + env(safe-area-inset-bottom));
+  line-height:1.7;
+}
+header{
+  position:sticky;top:0;z-index:50;
+  background:linear-gradient(135deg,var(--primary),#0d9488);
+  color:#fff;padding:16px 18px calc(14px);
+  box-shadow:0 6px 20px -12px rgba(0,0,0,.6);
+}
+header h1{margin:0;font-size:20px;letter-spacing:.5px;font-weight:800}
+header p{margin:2px 0 0;font-size:12.5px;opacity:.85}
+main{padding:16px 14px 8px;max-width:640px;margin:0 auto}
+.view{display:none;animation:fade .25s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.card{
+  background:var(--card);border-radius:var(--radius);
+  padding:16px 16px;margin-bottom:14px;box-shadow:var(--shadow);
+  border:1px solid rgba(226,232,240,.9);
+}
+.card h2{
+  margin:0 0 6px;font-size:17px;color:var(--primary-dark);
+  display:flex;align-items:center;gap:8px;font-weight:800;
+}
+.card h2 .ico{
+  width:30px;height:30px;border-radius:9px;background:var(--primary-light);
+  display:grid;place-items:center;font-size:16px;flex:none;
+}
+.card h3{margin:14px 0 6px;font-size:15px;color:var(--primary)}
+.card p{margin:8px 0;font-size:14.5px;color:#334155}
+ul.clean{margin:8px 0;padding-left:20px}
+ul.clean li{margin:7px 0;font-size:14.5px;color:#334155}
+ul.clean li b{color:var(--primary-dark)}
+.tag{
+  display:inline-block;background:var(--primary-light);color:var(--primary-dark);
+  font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;margin:2px 4px 2px 0;
+}
+.tag.warm{background:#ffedd5;color:#c2410c}
+.tag.red{background:#fee2e2;color:#b91c1c}
+
+/* cover */
+.cover{
+  background:linear-gradient(150deg,#0f766e,#14b8a6 60%,#5eead4);
+  color:#fff;border-radius:24px;padding:26px 20px;text-align:center;
+  box-shadow:0 18px 40px -22px rgba(15,118,110,.9);
+}
+.cover .big{font-size:30px;font-weight:900;letter-spacing:2px;line-height:1.35}
+.cover .sub{font-size:14px;opacity:.92;margin-top:6px}
+.cover .badge{
+  display:inline-block;margin-top:14px;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.35);padding:5px 14px;border-radius:999px;font-size:12.5px
+}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.stat{
+  background:var(--card);border-radius:14px;padding:12px;text-align:center;
+  box-shadow:var(--shadow);border:1px solid var(--line);
+}
+.stat .v{font-size:19px;font-weight:900;color:var(--primary-dark);line-height:1.3}
+.stat .k{font-size:12px;color:var(--muted);margin-top:2px}
+.stat.hot .v{color:var(--danger)}
+
+.grid2{display:grid;grid-template-columns:1fr;gap:10px}
+.principle{
+  background:linear-gradient(180deg,#fff,#f8fffe);
+  border:1px solid var(--line);border-left:5px solid var(--primary);
+  border-radius:14px;padding:12px 14px;
+}
+.principle h4{margin:0 0 4px;font-size:15px;color:var(--primary-dark)}
+.principle p{margin:0;font-size:13.5px;color:#475569}
+
+.callout{
+  background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;
+  padding:12px 14px;margin-top:12px;font-size:14px;color:#9a3412;
+}
+.callout.danger{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+.callout.info{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
+.callout b{display:block;margin-bottom:3px}
+
+.order{counter-reset:o;display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.order .step{
+  counter-increment:o;position:relative;padding:11px 14px 11px 46px;
+  background:#f8fafc;border:1px solid var(--line);border-radius:12px;font-size:14px;color:#334155
+}
+.order .step::before{
+  content:counter(o);position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:24px;height:24px;border-radius:50%;background:var(--primary);color:#fff;
+  font-size:12.5px;font-weight:800;display:grid;place-items:center;
+}
+.order .step b{color:var(--primary-dark)}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
+th,td{border:1px solid var(--line);padding:8px 9px;text-align:left}
+th{background:var(--primary-light);color:var(--primary-dark);font-weight:800}
+td{background:#fff;color:#334155}
+
+/* quiz */
+.qcard{background:var(--card);border-radius:var(--radius);padding:15px 15px;margin-bottom:13px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.qcard .q{font-size:15px;font-weight:700;margin-bottom:10px;color:#0f172a}
+.qcard .q span.n{
+  display:inline-grid;place-items:center;width:23px;height:23px;border-radius:50%;
+  background:var(--primary);color:#fff;font-size:12px;margin-right:7px;font-weight:800
+}
+.opt{
+  display:flex;gap:10px;align-items:flex-start;padding:11px 12px;margin:7px 0;
+  border:1.5px solid var(--line);border-radius:12px;font-size:14.2px;color:#334155;
+  cursor:pointer;background:#fff;transition:.15s;
+}
+.opt:active{transform:scale(.99)}
+.opt input{margin-top:4px;accent-color:var(--primary);width:17px;height:17px;flex:none}
+.opt.correct{border-color:#16a34a;background:#f0fdf4;color:#14532d;font-weight:600}
+.opt.wrong{border-color:var(--danger);background:#fef2f2;color:#7f1d1d}
+.opt.locked{pointer-events:none}
+.explain{
+  margin-top:9px;padding:10px 12px;border-radius:10px;
+  background:#f1f5f9;border-left:3px solid var(--primary);
+  font-size:13.5px;color:#334155;line-height:1.75;
+}
+.explain b{color:var(--primary-dark)}
+.explain.ok{background:#f0fdf4;border-left-color:#16a34a}
+.explain.ok b{color:#14532d}
+.explain.no{background:#fef2f2;border-left-color:var(--danger)}
+.explain.no b{color:#7f1d1d}
+.result{
+  display:none;text-align:center;padding:18px;border-radius:var(--radius);
+  background:linear-gradient(135deg,var(--primary),#14b8a6);color:#fff;margin-bottom:14px;
+}
+.result.show{display:block;animation:fade .3s}
+.result .score{font-size:34px;font-weight:900}
+.result p{color:#e6fffb;margin:4px 0 12px;font-size:14px}
+.btn{
+  border:none;border-radius:999px;padding:11px 24px;font-size:15px;font-weight:800;
+  background:#fff;color:var(--primary-dark);cursor:pointer;font-family:inherit;
+}
+.btn.ghost{background:rgba(255,255,255,.18);color:#fff;border:1.5px solid rgba(255,255,255,.55);margin-left:8px}
+.btn.solid{background:var(--primary);color:#fff}
+.btn:active{opacity:.85}
+
+/* 每頁大標題 */
+.vtitle{
+  display:flex;align-items:center;gap:10px;
+  font-size:25px;font-weight:900;letter-spacing:1.5px;
+  color:var(--primary-dark);margin:6px 2px 16px;
+}
+.vtitle .ti{
+  width:42px;height:42px;flex:none;border-radius:13px;
+  background:linear-gradient(135deg,var(--primary),#14b8a6);
+  color:#fff;display:grid;place-items:center;font-size:21px;
+  box-shadow:0 8px 18px -10px rgba(15,118,110,.9);
+}
+.vtitle small{
+  display:block;font-size:12px;font-weight:600;letter-spacing:.5px;
+  color:var(--muted);margin-top:2px;
+}
+/* 首頁：放大的標題 + 圖飾 */
+.vtitle.big{
+  font-size:33px;letter-spacing:2px;line-height:1.35;margin:10px 2px 14px;
+}
+.vtitle.big .ti{width:58px;height:58px;font-size:30px;border-radius:19px}
+.vtitle.big small{font-size:13.5px;letter-spacing:1px;margin-top:5px}
+.hero{
+  position:relative;overflow:hidden;border-radius:24px;text-align:center;
+  background:linear-gradient(135deg,#0f766e,#14b8a6 55%,#5eead4);
+  color:#fff;padding:26px 18px 22px;margin-bottom:16px;
+  box-shadow:0 22px 46px -28px rgba(15,118,110,.95);
+}
+.hero::before,.hero::after{
+  content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.13);
+}
+.hero::before{width:190px;height:190px;top:-80px;right:-56px}
+.hero::after{width:140px;height:140px;bottom:-70px;left:-46px}
+.hero .emojis{
+  position:relative;z-index:1;font-size:29px;letter-spacing:6px;
+  filter:drop-shadow(0 6px 12px rgba(0,0,0,.25));
+}
+.hero .line{
+  position:relative;z-index:1;font-size:14.5px;font-weight:700;
+  margin-top:10px;letter-spacing:2px;opacity:.95;
+}
+.chiprow{
+  position:relative;z-index:1;display:flex;flex-wrap:wrap;
+  gap:8px;justify-content:center;margin-top:15px;
+}
+.chip{
+  background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.45);
+  border-radius:999px;padding:6px 13px;font-size:13px;font-weight:700;
+}
+
+/* 重點回顧 */
+.rev{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.revitem{
+  border:1px solid var(--line);border-left:5px solid var(--primary);
+  border-radius:14px;padding:11px 13px;background:linear-gradient(180deg,#fff,#f8fffe);
+}
+.revhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px}
+.revhead .ri{font-size:17px}
+.revhead b{font-size:15px;color:var(--primary-dark)}
+.qtag{
+  margin-left:auto;background:#ffedd5;color:#c2410c;border:1px solid #fed7aa;
+  font-size:11.5px;font-weight:800;padding:2px 9px;border-radius:999px;white-space:nowrap;
+}
+.revitem ul.clean{margin:6px 0 0}
+.revitem ul.clean li{font-size:13.6px;margin:5px 0}
+table.key{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+table.key th,table.key td{border:1px solid var(--line);padding:7px 8px;text-align:left}
+table.key th{background:var(--primary-light);color:var(--primary-dark);font-weight:800}
+table.key td{background:#fff;color:#334155}
+table.key td:first-child{font-weight:800;color:var(--primary-dark);white-space:nowrap}
+
+/* 參考資料 */
+ol.refs{margin:6px 0 0;padding-left:20px;counter-reset:r}
+ol.refs li{
+  counter-increment:r;margin:12px 0;font-size:14px;color:#334155;
+  padding-left:4px;line-height:1.75;word-break:break-word;
+}
+ol.refs li::marker{font-weight:800;color:var(--primary)}
+ol.refs a{color:var(--primary);text-decoration:none;word-break:break-all;font-size:12.5px}
+ol.refs a:active{text-decoration:underline}
+
+/* 閱讀進度 / 解鎖 */
+.plist{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.pitem{
+  display:flex;align-items:center;gap:9px;padding:11px 13px;
+  border:1.5px dashed var(--line);border-radius:12px;
+  font-size:14px;color:#475569;background:#f8fafc;
+}
+.pitem .pi{font-size:16px}
+.pitem.done{border-style:solid;border-color:#16a34a;background:#f0fdf4;color:#14532d;font-weight:700}
+.pitem.done::after{content:"✓ 完成";margin-left:auto;font-size:12px;font-weight:800;color:#16a34a}
+.pbar{height:9px;border-radius:999px;background:#e2e8f0;overflow:hidden;margin-top:14px}
+.pbar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#0f766e,#14b8a6);transition:width .4s}
+.ptext{font-size:13px;color:var(--muted);margin:7px 0 0;font-weight:700;letter-spacing:.3px}
+#lockCard.opened{border-color:#16a34a}
+#lockCard.opened h2 .ico{background:#dcfce7}
+.toast{
+  position:fixed;left:50%;transform:translateX(-50%);
+  bottom:calc(86px + env(safe-area-inset-bottom));
+  background:#0f172a;color:#fff;padding:10px 18px;border-radius:999px;
+  font-size:13.5px;z-index:80;white-space:nowrap;
+  box-shadow:0 12px 30px -12px rgba(0,0,0,.7);animation:toastin .28s ease;
+}
+@keyframes toastin{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+.bottom-hint{
+  position:fixed;left:0;right:0;bottom:calc(72px + env(safe-area-inset-bottom));
+  text-align:center;font-size:12.5px;font-weight:700;color:#0f766e;
+  background:linear-gradient(180deg,rgba(241,245,249,0),rgba(241,245,249,.95) 60%);
+  padding:22px 10px 8px;pointer-events:none;z-index:40;
+}
+
+footer.note{
+  text-align:center;font-size:12px;color:var(--muted);padding:10px 16px 6px;line-height:1.6
+}
+footer.note a{color:var(--primary);text-decoration:none;font-weight:600}
+
+/* bottom nav */
+nav.tabs{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(6,1fr);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+nav.tabs button{
+  background:none;border:none;padding:9px 1px 8px;font-family:inherit;
+  color:var(--muted);font-size:10px;cursor:pointer;display:flex;
+  flex-direction:column;align-items:center;gap:3px;font-weight:600;
+}
+nav.tabs button .ic{font-size:20px;line-height:1;filter:grayscale(1);opacity:.7}
+nav.tabs button.active{color:var(--primary-dark)}
+nav.tabs button.active .ic{filter:none;opacity:1;transform:translateY(-1px)}
+@media (min-width:640px){
+  main{max-width:680px}
+  .stats{grid-template-columns:repeat(4,1fr)}
+  .grid2{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>控壓有一套 · 健康沒煩惱</h1>
+  <p>高血壓衛教行動版 — 得舒飲食 · 運動 · 居家照護 · 自我測驗</p>
+</header>
+
+<main>
+
+<!-- ========== 首頁 ========== -->
+<section class="view active" id="home">
+  <h1 class="vtitle big"><span class="ti">🏠</span><span>控壓有一套 健康沒煩惱<small>高血壓衛教重點總覽</small></span></h1>
+
+  <div class="hero">
+    <div class="emojis">🩺 🥗 🏃 🚭 💊</div>
+    <div class="line">得舒飲食 ・ 運動處方 ・ 居家照護 ・ 自我測驗</div>
+    <div class="chiprow">
+      <span class="chip">🩺 血壓 722</span>
+      <span class="chip">🥗 蔬果 5+5</span>
+      <span class="chip">🏃 每週 3–7 次</span>
+      <span class="chip">✏️ 5 題測驗</span>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <b>💡 APP 使用方式</b>
+    <ul class="clean" style="margin-top:6px">
+      <li>用<b>下方導覽列</b>切換單元：得舒飲食、運動生活、居家照護。</li>
+      <li>每個單元<b>捲動到最底端</b>會自動打勾，三個都看完就解鎖測驗。</li>
+      <li><b>測驗</b>共 5 題，交卷後會公布答案並附<b>逐題解析</b>。</li>
+      <li><b>重點回顧</b>把內容整理成清單，並標記對應題號，方便考前複習。</li>
+      <li>進度存在這台裝置，關閉網頁後再回來仍會保留。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">📋</span>原始衛教資料</h2>
+    <p>需要列印或分享給家屬時，可開啟完整版 PDF 衛教單。</p>
+    <p style="margin-top:10px">
+      <a class="btn solid" href="/%E9%AB%98%E8%A1%80%E5%A3%93%E8%A1%9B%E6%95%99.pdf" target="_blank" rel="noopener">開啟 高血壓衛教.pdf</a>
+    </p>
+  </div>
+</section>
+
+<!-- ========== 得舒飲食 ========== -->
+<section class="view" id="diet">
+  <h1 class="vtitle"><span class="ti">🥗</span><span>得舒飲食與飲食原則<small>DASH 飲食・限鈉補鉀</small></span></h1>
+  <div class="card">
+    <h2><span class="ico">🥗</span>得舒飲食與飲食原則</h2>
+    <p>得舒飲食名稱源於原文 <b>DASH（Dietary Approach to Stop Hypertension）</b>，強調攝取天然富含<b>鉀、鈣、鎂、膳食纖維、蛋白質和不飽和脂肪酸</b>等營養素，避免高鈉、高糖、不健康脂肪的食物。</p>
+    <p>採用這種飲食方式能幫助新陳代謝、鈉離子排出並保護血管；減少攝取飽和脂肪酸與精緻糖，可降低血管硬化風險，所以能降血壓。</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">🌾</span>多吃全穀雜糧、少精緻糖</h2>
+    <p>每天的主食<b>至少三分之二</b>是全穀雜糧，選用含麩皮的全穀及根莖類，取代白飯、白麵製品。</p>
+    <div>
+      <span class="tag">糙米</span><span class="tag">紫米</span><span class="tag">燕麥</span>
+      <span class="tag">蕎麥</span><span class="tag">薏仁</span><span class="tag">地瓜</span>
+      <span class="tag">芋頭</span><span class="tag">馬鈴薯</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">🍎</span>天天蔬果 5+5</h2>
+    <ul class="clean">
+      <li>每天至少 <b>5 份蔬菜</b>（約 3 至 4 碗）。</li>
+      <li>每天至少 <b>5 份水果</b>（約 5 個拳頭大小）。</li>
+      <li>選擇<b>色彩繽紛、富含鉀</b>的蔬果，如香蕉、芭樂。</li>
+      <li>蔬菜如空心菜、菠菜，含維生素、礦物質、膳食纖維及植化素。</li>
+    </ul>
+    <p>有助於維持血壓穩定、促進骨骼健康，並具有抗氧化、抗發炎作用，幫助預防慢性疾病。</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">🥛</span>適量低脂乳品</h2>
+    <ul class="clean">
+      <li>每天 <b>2 份低脂奶或低脂乳品</b>（1 份 = 240cc）、低脂起司、優格等。</li>
+      <li>低脂牛奶可當早餐飲用，低脂優格或優酪乳可安排於點心時段。</li>
+      <li>除熱量較低外，還能增加<b>蛋白質與鈣質</b>的攝取。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">🍗</span>紅肉改白肉</h2>
+    <ul class="clean">
+      <li>攝取<b>優質蛋白質</b>：以魚、雞、鴨、鵝等<b>去皮白肉</b>或<b>黃豆類製品</b>。</li>
+      <li>取代豬、牛、羊等<b>紅肉及內臟類</b>。</li>
+      <li>盡量<b>避免加工肉品</b>（香腸、火腿），降低飽和脂肪攝取。</li>
+    </ul>
+    <div class="callout">
+      <b>PS：採用健康的烹調方式喔！</b>
+      水煮 ＞ 清蒸 ＞ 滷 ＞ 煎 ＞ 炒 ＞ 炸
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">🥜</span>吃堅果、用好油</h2>
+    <p>好油與壞油主要看<b>飽和脂肪酸</b>與<b>不飽和脂肪酸</b>的含量，不飽和脂肪酸含量較高的油品屬於好油。</p>
+    <ul class="clean">
+      <li>堅果富含對心血管有益的不飽和脂肪酸（好油）。</li>
+      <li>適量攝取可調節血脂、降低發炎反應、促進皮膚健康。</li>
+      <li>增加飽足感，幫助<b>穩定血糖和血壓</b>。</li>
+      <li>每天 <b>1 湯匙堅果</b>：核桃、腰果、芝麻、花生都是好選擇。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">🧂</span>飲食原則：限鈉、補鉀、低熱量</h2>
+    <table>
+      <tr><th>項目</th><th>建議</th></tr>
+      <tr><td>限制鈉攝取</td><td>每天鈉不超過 <b>100 mmol</b>（約 <b>6 公克鹽</b>或 2.4 公克鈉），減少循環血量及心臟負擔</td></tr>
+      <tr><td>適量攝取鉀</td><td>每天約攝取 <b>90 mmol 鉀</b>，可由綠色蔬菜及水果補充</td></tr>
+      <tr><td>飲食型態</td><td>低熱量、低膽固醇、低飽和脂肪酸</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ========== 運動與生活 ========== -->
+<section class="view" id="active">
+  <h1 class="vtitle"><span class="ti">🏃</span><span>運動與生活調整<small>運動處方・體重管理・戒菸限酒</small></span></h1>
+  <div class="card">
+    <h2><span class="ico">🏃</span>運動處方（有氧運動）</h2>
+    <p>建議高血壓患者應採<b>「有氧運動」</b>，例如：快走、慢跑、游泳。</p>
+    <table>
+      <tr><th>項目</th><th>目標</th></tr>
+      <tr><td>運動強度</td><td>最大攝氧量的 <b>40~70%</b></td></tr>
+      <tr><td>每次時間</td><td><b>30~60 分鐘</b></td></tr>
+      <tr><td>每週頻率</td><td><b>3~7 次</b></td></tr>
+      <tr><td>每週消耗</td><td><b>700~2,000 K</b>（卡）</td></tr>
+      <tr><td>持續時間</td><td>依運動處方持續 <b>2~3 個月</b></td></tr>
+    </table>
+    <div class="callout info">
+      <b>💪 阻力運動怎麼做？</b>
+      例如舉重，應<b>配合有氧運動</b>執行，且採<b>低阻力、高重覆性</b>，對血壓控制有更好效果。
+      若<b>單獨</b>採阻力運動，對血壓控制<b>將無任何助益</b>。
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">⚖️</span>體重管理</h2>
+    <p>「肥胖」和高血壓的發生有密切關係，<b>特別是上腹部有較多脂肪者</b>。保持體重於標準範圍內。</p>
+    <div class="stats">
+      <div class="stat"><div class="v">20–24.9</div><div class="k">理想 BMI kg/m²</div></div>
+      <div class="stat"><div class="v">↓5–20</div><div class="k">每減 10kg 降收縮壓 mmHg</div></div>
+      <div class="stat"><div class="v">&lt; 90</div><div class="k">男性腰圍 公分</div></div>
+      <div class="stat"><div class="v">&lt; 80</div><div class="k">女性腰圍 公分</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">🚭</span>戒菸：絕對要戒</h2>
+    <p>由於<b>尼古丁造成血管收縮而使血壓上升</b>，且吸菸是造成心血管疾病的主要危險因子，所以高血壓病患要<b>絕對的戒菸</b>。</p>
+    <ul class="clean">
+      <li><b>血管收縮：</b>尼古丁會刺激腎上腺素分泌，使心臟跳動加快、血管收縮、阻力增加，導致血壓飆高。</li>
+      <li><b>血液缺氧：</b>菸品中的一氧化碳會減少血液攜氧能力，加重心臟負擔。</li>
+      <li><b>動脈硬化與血栓：</b>長期吸菸損傷血管內皮、加速動脈硬化，大幅增加心肌梗塞與中風風險。</li>
+      <li><b>藥物效果變差：</b>抽菸者血壓控制率明顯較低，容易演變為難以控制的<b>頑固型高血壓</b>。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">🍷</span>限酒與生活調整</h2>
+    <div class="callout danger">
+      <b>❌ 高血壓不為降血壓而喝酒</b>
+      無飲酒習慣者<b>切勿因健康謠言而開始飲酒</b>。
+    </div>
+    <ul class="clean">
+      <li><b>嚴格限制攝取：</b>高血壓患者必須嚴格控管酒精。</li>
+      <li><b>男性：</b>應嚴格節制，避免過量。</li>
+      <li><b>女性及體重較輕者：</b>酒精代謝能力較低，應維持更低的頻率與份量。</li>
+      <li><b>絕對禁忌：</b>嚴禁短時間內大量酗酒。</li>
+    </ul>
+
+    <h3>飲酒對健康的兩大危機</h3>
+    <div class="principle" style="border-left-color:var(--danger)">
+      <h4>1. 血壓與心血管失控</h4>
+      <p><b>反彈性血壓升高：</b>酒精代謝物（乙醛）會先讓血管短暫擴張，隨後引發血管收縮，導致血壓大幅波動。<br>
+      <b>併發症風險：</b>長期過量會增加心律不整、中風及肝臟疾病機率。</p>
+    </div>
+    <div class="principle" style="border-left-color:var(--accent);margin-top:8px">
+      <h4>2. 危險的藥物交互作用</h4>
+      <p><b>併用降血壓藥：</b>易引發突發性低血壓與頭暈。<br>
+      <b>併用利尿劑：</b>易導致體內過度脫水與肌肉抽筋。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 居家照護 ========== -->
+<section class="view" id="care">
+  <h1 class="vtitle"><span class="ti">🩺</span><span>居家照護注意事項<small>722 量測・555 起床・洗澡保暖</small></span></h1>
+  <div class="card">
+    <h2><span class="ico">🩺</span>居家血壓「722」量測與警訊</h2>
+    <div class="order">
+      <div class="step"><b>「7」連續 7 天：</b>每天早晚各量一次，連續記錄 7 天。</div>
+      <div class="step"><b>「2」每次 2 遍：</b>同一時間量測兩次，取平均值（間隔 1 分鐘）。</div>
+      <div class="step"><b>「2」早晚各 2 次：</b>早上起床後 1 小時內（上完廁所、吃藥吃飯前）；晚上睡覺前 1 小時內。</div>
+    </div>
+    <h3>正確姿勢</h3>
+    <ul class="clean">
+      <li>量血壓前<b>安靜坐著休息 5 分鐘</b>。</li>
+      <li>量測時<b>雙腳平放不交叉、不說話</b>。</li>
+      <li><b>壓脈帶與心臟保持同高</b>。</li>
+    </ul>
+    <div class="callout danger">
+      <b>⚠️ 就醫警訊</b>
+      若居家血壓<b>持續超過 130/80 mmHg</b>，或出現<b>頭暈、頭痛、胸悶、視力模糊</b>，請務必就醫。
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">🛏️</span>起床與防跌「555」原則</h2>
+    <p>避免<b>「姿勢性低血壓」</b>導致頭暈跌倒，醒來後依序：</p>
+    <div class="order">
+      <div class="step">在床上先<b>躺 5 分鐘</b></div>
+      <div class="step"><b>坐起來 5 分鐘</b></div>
+      <div class="step"><b>床邊雙腳垂地 5 分鐘</b>，再站起來活動</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">🚽</span>排便習慣</h2>
+    <div class="callout danger">
+      <b>❌ 避免用力</b>
+      多吃蔬果、多喝水保持排便順暢。如廁時<b>千萬不要過度憋氣用力</b>，否則血壓會瞬間飆高，增加<b>腦血管中風</b>的風險。
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">🚿</span>洗澡與保暖</h2>
+    <ul class="clean">
+      <li><b>溫水淋浴：</b>水溫控制在 <b>39°C – 40°C</b>。</li>
+      <li><b>避免泡澡或洗太久：</b>控制在 <b>10 分鐘內</b>。</li>
+      <li><b>動作要慢：</b>出浴缸或浴室時動作要慢。</li>
+      <li><b>注意溫差：</b>冬天進出冷氣房、半夜起床上廁所時，立刻加衣服，做好<b>頭頸部與四肢保暖</b>。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== 測驗 ========== -->
+<section class="view" id="quiz">
+  <h1 class="vtitle"><span class="ti">✏️</span><span>衛教自我測驗<small>5 題互動題・附答案解析</small></span></h1>
+  <div class="card" id="lockCard">
+    <h2><span class="ico">🔒</span>完成閱讀後開放測驗</h2>
+    <p>請先看完下列 <b>3 個單元</b>，並把每個單元<b>捲動到最底端</b>，測驗就會自動解鎖。</p>
+    <div class="plist">
+      <div class="pitem" data-unit="diet"><span class="pi">🥗</span>得舒飲食與飲食原則</div>
+      <div class="pitem" data-unit="active"><span class="pi">🏃</span>運動、體重與戒菸限酒</div>
+      <div class="pitem" data-unit="care"><span class="pi">🩺</span>居家照護注意事項</div>
+    </div>
+    <div class="pbar"><i id="progFill"></i></div>
+    <p class="ptext" id="progText">已完成 0 / 3 單元</p>
+    <div class="callout info" id="lockHint">
+      <b>💡 小提示</b>
+      進入單元後一路往下滑，看到最底部就會自動打勾。<br>
+      <b>完成測驗交卷後</b>，下方才會顯示「重點回顧 × 測驗呼應」。
+    </div>
+  </div>
+
+  <div id="quizBody" hidden>
+    <div class="result" id="result">
+      <div class="score" id="scoreText">0 / 5</div>
+      <p id="scoreMsg">完成測驗看成績</p>
+      <button class="btn" id="retryBtn">再測一次</button>
+    </div>
+    <div id="quizList"></div>
+    <div style="text-align:center;margin:6px 0 4px">
+      <button class="btn solid" id="submitBtn" style="padding:12px 34px">提交答案</button>
+    </div>
+  </div>
+
+  <!-- ========== 重點回顧（原首頁衛教重點導覽，移至測驗之後） ========== -->
+  <div class="card" id="review" hidden>
+    <h2><span class="ico">📌</span>重點回顧 × 測驗呼應</h2>
+    <p>把三個單元的重點整理成清單，每項右側標記<b>對應的測驗題號</b>，複習完再回上方作答、對照解析。</p>
+
+    <div class="rev">
+      <div class="revitem">
+        <div class="revhead"><span class="ri">🥗</span><b>得舒飲食與飲食原則</b><span class="qtag">呼應第 1、2 題</span></div>
+        <ul class="clean">
+          <li>每天主食<b>至少 2/3 為全穀雜糧</b>：糙米、紫米、燕麥、蕎麥、薏仁、地瓜、芋頭、馬鈴薯。</li>
+          <li><b>天天蔬果 5+5</b>：蔬菜 5 份（約 3–4 碗）、水果 5 份（約 5 個拳頭），選富含鉀的香蕉、芭樂。</li>
+          <li><b>每天 2 份低脂乳品</b>（1 份 = 240cc）：低脂奶、優格、起司。</li>
+          <li><b>紅肉改白肉</b>：魚、去皮雞鴨鵝、黃豆製品取代紅肉內臟，避開香腸火腿等加工肉品。</li>
+          <li><b>每天 1 湯匙堅果用好油</b>；烹調順序：水煮＞清蒸＞滷＞煎＞炒＞炸。</li>
+          <li><b>限鈉補鉀</b>：每天鈉 &lt; 100 mmol（約 6 克鹽）、鉀約 90 mmol；低熱量、低膽固醇、低飽和脂肪酸。</li>
+        </ul>
+      </div>
+
+      <div class="revitem">
+        <div class="revhead"><span class="ri">🏃</span><b>運動與體重管理</b><span class="qtag">呼應第 3 題</span></div>
+        <ul class="clean">
+          <li><b>有氧運動</b>：快走、慢跑、游泳；強度為最大攝氧量 <b>40–70%</b>。</li>
+          <li>每次 <b>30–60 分鐘</b>、每週 <b>3–7 次</b>、每週消耗 700–2,000 K，持續 2–3 個月。</li>
+          <li>阻力運動要<b>搭配有氧</b>、低阻力高重覆；單獨做對血壓控制無助益。</li>
+          <li><b>BMI 20–24.9</b>；每減 10 公斤可降收縮壓 5–20 mmHg；腰圍男 &lt; 90、女 &lt; 80 公分。</li>
+        </ul>
+      </div>
+
+      <div class="revitem">
+        <div class="revhead"><span class="ri">🚭</span><b>戒菸、限酒與生活調整</b><span class="qtag">觀念補充</span></div>
+        <ul class="clean">
+          <li>尼古丁使<b>血管收縮、血壓飆高</b>，一氧化碳造成缺氧，長期吸菸加速動脈硬化與血栓。</li>
+          <li>抽菸者血壓控制率低，易變成<b>頑固型高血壓</b>，要絕對戒菸。</li>
+          <li><b>不為降血壓而喝酒</b>：酒精先擴張再收縮血管，造成血壓大幅波動。</li>
+          <li>併用降壓藥易<b>突發性低血壓</b>、併用利尿劑易<b>脫水抽筋</b>；嚴禁短時間大量酗酒。</li>
+        </ul>
+      </div>
+
+      <div class="revitem">
+        <div class="revhead"><span class="ri">🩺</span><b>居家照護注意事項</b><span class="qtag">呼應第 4、5 題</span></div>
+        <ul class="clean">
+          <li><b>血壓 722</b>：連續 7 天、每次量 2 遍、早晚各 1 次；量前安靜坐 5 分鐘、雙腳平放不說話。</li>
+          <li><b>就醫警訊</b>：持續 &gt; 130/80 mmHg，或頭暈、頭痛、胸悶、視力模糊要立刻就醫。</li>
+          <li><b>起床 555</b>：躺 5 分鐘 → 坐起 5 分鐘 → 雙腳垂地 5 分鐘，預防姿勢性低血壓跌倒。</li>
+          <li>排便<b>不可憋氣用力</b>；溫水淋浴 39–40°C、10 分鐘內完成，注意頭頸四肢保暖。</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>📋 測驗重點速記（題目關鍵呼應）</h3>
+    <table class="key">
+      <tr><th>題號</th><th>考什麼</th><th>判斷關鍵</th></tr>
+      <tr><td>第 1 題</td><td>得舒飲食（DASH）原則</td><td>多蔬果＋全穀雜糧＋低脂乳品，不是加工食品或完全禁脂</td></tr>
+      <tr><td>第 2 題</td><td>蛋白質怎麼選</td><td>白肉與黃豆製品取代紅肉、內臟與加工肉品</td></tr>
+      <tr><td>第 3 題</td><td>運動與體重管理</td><td>規律有氧＋控制 BMI 與腰圍，不是只練重量或每週一次</td></tr>
+      <tr><td>第 4 題</td><td>居家血壓量測</td><td>先坐 5 分鐘、雙腳平放、不說話、壓脈帶與心臟同高</td></tr>
+      <tr><td>第 5 題</td><td>起床防跌</td><td>遵守 555 原則，避免立即起身與憋氣用力</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ========== 參考資料 ========== -->
+<section class="view" id="refs">
+  <h1 class="vtitle"><span class="ti">📚</span><span>參考資料<small>出處與使用說明</small></span></h1>
+  <div class="card">
+    <h2><span class="ico">📚</span>參考資料</h2>
+    <ol class="refs">
+      <li>張庭溱（2026）．健康Q&amp;A～降血壓的武功寶典～得舒飲食．<b>彰基院訊</b>，43(1)，26-27。<br>
+        <a href="https://www.airitilibrary.com/Article/Detail?DocID=P20140814001-N202602110010-00012" target="_blank" rel="noopener">https://www.airitilibrary.com/Article/Detail?DocID=P20140814001-N202602110010-00012</a>
+      </li>
+      <li>鵬清淳、顧家恬（2022）．高血壓病人護理．<b>慢性病護理學</b>（四版，68-69頁）．匯華。</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">ℹ️</span>使用說明</h2>
+    <ul class="clean">
+      <li>本 APP 內容整理自《控壓有一套 健康沒煩惱》高血壓衛教單。</li>
+      <li>測驗共 5 題，需先看完 <b>得舒飲食、運動生活、居家照護</b> 三個單元才能作答。</li>
+      <li>閱讀進度會存在這台裝置上，關閉網頁後再回來仍會保留。</li>
+      <li>本資料僅供<b>衛教參考</b>，不能取代醫師診療；身體不適請就醫。</li>
+    </ul>
+    <p style="margin-top:10px">
+      <a class="btn solid" href="/%E9%AB%98%E8%A1%80%E5%A3%93%E8%A1%9B%E6%95%99.pdf" target="_blank" rel="noopener">開啟原始 PDF 衛教單</a>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<div class="bottom-hint" id="bottomHint" hidden>往下捲到最底端，即可完成閱讀 ✓</div>
+
+<nav class="tabs">
+  <button class="active" data-view="home"><span class="ic">🏠</span>首頁</button>
+  <button data-view="diet"><span class="ic">🥗</span>得舒飲食</button>
+  <button data-view="active"><span class="ic">🏃</span>運動生活</button>
+  <button data-view="care"><span class="ic">🩺</span>居家照護</button>
+  <button data-view="quiz"><span class="ic">✏️</span>測驗</button>
+  <button data-view="refs"><span class="ic">📚</span>參考資料</button>
+</nav>
+
+<script>
+/* ---------- 導覽 ---------- */
+const tabs = document.querySelectorAll('nav.tabs button');
+const views = document.querySelectorAll('.view');
+function show(id){
+  views.forEach(v => v.classList.toggle('active', v.id === id));
+  tabs.forEach(b => b.classList.toggle('active', b.dataset.view === id));
+  window.scrollTo({top:0, behavior:'instant' in window ? 'auto' : 'auto'});
+  location.hash = id;
+  if (id === 'quiz') setTimeout(remountQuiz, 0);
+  setTimeout(checkRead, 0);
+}
+tabs.forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
+if (location.hash) {
+  const h = location.hash.slice(1);
+  if (document.getElementById(h)) show(h);
+}
+
+/* ---------- 閱讀進度與測驗解鎖 ---------- */
+const UNITS = ['diet', 'active', 'care'];
+const UNIT_NAMES = { diet:'得舒飲食', active:'運動生活', care:'居家照護' };
+const STORE = 'bp-edu-read-v1';
+let readSet = new Set();
+try { readSet = new Set(JSON.parse(localStorage.getItem(STORE) || '[]')); } catch (e) {}
+const hint = document.getElementById('bottomHint');
+let toastTimer = null;
+
+function toast(msg){
+  const old = document.querySelector('.toast');
+  if (old) old.remove();
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.remove(), 2800);
+}
+function saveRead(){
+  try { localStorage.setItem(STORE, JSON.stringify([...readSet])); } catch (e) {}
+}
+function refreshProgress(){
+  const total = UNITS.length;
+  const n = UNITS.filter(u => readSet.has(u)).length;
+  const fill = document.getElementById('progFill');
+  if (fill) fill.style.width = (n / total * 100) + '%';
+  const txt = document.getElementById('progText');
+  if (txt) txt.textContent = '已完成 ' + n + ' / ' + total + ' 單元';
+  document.querySelectorAll('.pitem').forEach(el => {
+    el.classList.toggle('done', readSet.has(el.dataset.unit));
+  });
+  const open = n === total;
+  const body = document.getElementById('quizBody');
+  if (body) body.hidden = !open;
+  const lock = document.getElementById('lockCard');
+  if (lock) lock.classList.toggle('opened', open);
+  const active = document.querySelector('.view.active');
+  const inUnit = active && UNITS.includes(active.id) && !readSet.has(active.id);
+  if (hint) hint.hidden = !inUnit;
+}
+function markRead(id){
+  if (readSet.has(id)) return;
+  readSet.add(id);
+  saveRead();
+  const n = UNITS.filter(u => readSet.has(u)).length;
+  refreshProgress();
+  toast(n === UNITS.length
+    ? '🎉 三個單元都看完了，測驗已解鎖！'
+    : '✓ 已完成閱讀：' + UNIT_NAMES[id] + '（' + n + '/3）');
+}
+function checkRead(){
+  const active = document.querySelector('.view.active');
+  if (!active || !UNITS.includes(active.id) || readSet.has(active.id)) {
+    refreshProgress();
+    return;
+  }
+  const doc = document.documentElement;
+  const reached = window.innerHeight + window.scrollY >= doc.scrollHeight - 60;
+  const fits = doc.scrollHeight <= window.innerHeight + 4;
+  if (reached || fits) markRead(active.id);
+  else refreshProgress();
+}
+window.addEventListener('scroll', checkRead, { passive: true });
+window.addEventListener('resize', checkRead);
+refreshProgress();
+
+/* ---------- 測驗 ---------- */
+const questions = [
+  {
+    q:'下列哪一項最符合得舒飲食（DASH）的原則？',
+    opts:['多吃加工食品，增加熱量攝取','減少蔬果攝取，以肉類為主要食物','多攝取蔬果、全穀雜糧及低脂乳品','完全避免攝取所有脂肪'],
+    a:2,
+    why:'得舒飲食（DASH）強調多吃蔬果、全穀雜糧與低脂乳品，並限制鈉、精緻糖與不健康脂肪，所以 C 正確；加工食品、少吃蔬果、完全避開所有脂肪都不符合原則（好油如堅果、橄欖油仍需適量攝取）。'
+  },
+  {
+    q:'為降低飽和脂肪酸的攝取，高血壓患者應如何選擇蛋白質來源？',
+    opts:['多吃豬肉、牛肉及動物內臟','以魚肉、去皮雞肉及黃豆製品取代部分紅肉','多吃香腸、火腿等加工肉品','完全不攝取蛋白質'],
+    a:1,
+    why:'魚、去皮禽肉與黃豆製品屬於優質蛋白質，飽和脂肪較低；紅肉、內臟與香腸火腿等加工肉品的飽和脂肪和鈉含量高，而蛋白質是必需營養素，不能完全不攝取。'
+  },
+  {
+    q:'下列哪一項最符合高血壓患者的運動與體重管理原則？',
+    opts:['每週運動一次，每次 10 分鐘即可','只進行高強度重量訓練，不需要有氧運動','維持適當體重，並規律進行快走、游泳等有氧運動','運動後立即大量攝取高鈉食物'],
+    a:2,
+    why:'有氧運動建議每週 3～7 次、每次 30～60 分鐘，並把 BMI 維持在 20～24.9；單獨的阻力運動對血壓控制沒有幫助，運動後攝取高鈉食物也會抵銷運動效益。'
+  },
+  {
+    q:'以下哪一項是高血壓患者正確的居家血壓量測方式？',
+    opts:['起床後立即下床，馬上測量血壓','量測前安靜坐著休息 5 分鐘，雙腳平放且不說話','量測時雙腳交叉，可以讓身體更放鬆','只要沒有頭暈或頭痛，就不需要定期量血壓'],
+    a:1,
+    why:'正確做法是量測前安靜坐 5 分鐘、雙腳平放不交叉、不說話，壓脈帶與心臟保持同高；起床應先依「555 原則」緩慢起身，且即使沒有症狀也要定期量測。'
+  },
+  {
+    q:'高血壓患者為了避免起床時頭暈或跌倒，下列哪一種做法最正確？',
+    opts:['醒來後立即起身，避免躺太久','起床前先快速坐起，再立刻站起來','遵守「555 原則」：躺 5 分鐘、坐起 5 分鐘、雙腳垂地 5 分鐘後再站起來','起床前先憋氣用力，讓自己快速清醒'],
+    a:2,
+    why:'555 原則能讓血壓慢慢回升，避免姿勢性低血壓造成頭暈跌倒；快速起身或憋氣用力會讓血壓劇烈波動，反而增加跌倒與腦中風風險。'
+  }
+];
+const letters = ['A','B','C','D'];
+function listEl(){ return document.getElementById('quizList'); }
+
+function renderQuiz(){
+  const el = listEl();
+  if (!el) return;
+  el.dataset.rendered = '1';
+  el.innerHTML = questions.map((item, qi) => `
+    <div class="qcard" data-q="${qi}">
+      <div class="q"><span class="n">${qi+1}</span>${item.q}</div>
+      ${item.opts.map((o, oi) => `
+        <label class="opt">
+          <input type="radio" name="q${qi}" value="${oi}">
+          <span><b>${letters[oi]}.</b> ${o}</span>
+        </label>`).join('')}
+    </div>`).join('');
+}
+renderQuiz();
+
+/* 若題目是在容器隱藏時建立的，無線索化結構會不完整（螢幕閱讀器讀不到），
+   進入測驗頁時重新掛載一次題目來修正；已有作答或已交卷則不重設。 */
+let quizDone = false;
+function remountQuiz(){
+  const el = listEl();
+  if (!el || el.dataset.remounted === '1' || quizDone) return;
+  if (el.querySelector('input:checked')) return;
+  const fresh = document.createElement('div');
+  fresh.id = 'quizList';
+  fresh.dataset.remounted = '1';
+  el.parentNode.replaceChild(fresh, el);
+  renderQuiz();
+}
+
+document.getElementById('submitBtn').addEventListener('click', () => {
+  let score = 0, answered = 0;
+  const list = listEl();
+  questions.forEach((item, qi) => {
+    const card = list.querySelector(`[data-q="${qi}"]`);
+    const chosen = card.querySelector('input:checked');
+    const opts = card.querySelectorAll('.opt');
+    opts.forEach(o => o.classList.add('locked'));
+    let isRight = false;
+    if (chosen) {
+      answered++;
+      const ci = Number(chosen.value);
+      isRight = (ci === item.a);
+      if (isRight) score++;
+      else opts[ci].classList.add('wrong');
+    }
+    opts[item.a].classList.add('correct');
+
+    const label = isRight ? '答對了' : (chosen ? '答錯了' : '未作答');
+    const ex = document.createElement('div');
+    ex.className = 'explain ' + (isRight ? 'ok' : 'no');
+    ex.innerHTML = '<b>' + label + '・解析：</b>' + item.why;
+    card.appendChild(ex);
+  });
+
+  const res = document.getElementById('result');
+  quizDone = true;
+  document.getElementById('scoreText').textContent = score + ' / ' + questions.length;
+  let msg;
+  if (score === 5) msg = '🎉 滿分！高血壓衛教重點你都掌握囉';
+  else if (score >= 4) msg = '👏 很棒！再複習一下答錯的題目';
+  else if (score >= 3) msg = '👍 及格囉！回前面單元再看一次重點';
+  else msg = '💪 別灰心，重新閱讀衛教重點後再試一次';
+  document.getElementById('scoreMsg').textContent =
+    msg + (answered < questions.length ? '（有 ' + (questions.length - answered) + ' 題未作答）' : '');
+  res.classList.add('show');
+  res.scrollIntoView({behavior:'smooth', block:'center'});
+  document.getElementById('submitBtn').style.display = 'none';
+
+  // 交卷後才顯示重點回顧
+  const rv = document.getElementById('review');
+  if (rv) rv.hidden = false;
+});
+
+document.getElementById('retryBtn').addEventListener('click', () => {
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('submitBtn').style.display = '';
+  const rv = document.getElementById('review');
+  if (rv) rv.hidden = true;
+  quizDone = false;
+  renderQuiz();
+  document.getElementById('quizList').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+/* ---------- PWA 離線快取 ---------- */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
